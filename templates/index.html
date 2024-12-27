@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetMate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @font-face {
+            font-family: 'Meutas';
+            src: url('../static/Meutas_Font/Meutas-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Meutas';
+            src: url("../static/Meutas_Font/Meutas-Bold.otf") format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'Meutas', sans-serif;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .absolute-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+    /* Modernized scrollbar for WebKit browsers */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px !important; /* Enforce scrollbar width */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #4a5568 !important; /* Enforce thumb color */
+        border-radius: 4px !important; /* Rounded edges for the thumb */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: #2d3748 !important; /* Darker thumb color on hover */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background-color: #2d3748 !important; /* Track background color */
+    }
+
+    /* Modern scrollbar for Firefox */
+    .custom-scrollbar {
+        scrollbar-width: thin; /* Thin scrollbar */
+        scrollbar-color: #ffffff #2d3748; /* Thumb and track colors */
+    }
+</style>
+
+</head>
+<body class="bg-gray-900  text-gray-200" style="font-family: 'Meutas', sans-serif;">
+    <div class="container mx-auto p-6">
+        <!-- Absolute Button -->
+        <a href="https://github.com/" target="_blank" class="absolute-button bg-black-500 text-white py-2 px-2 rounded-lg hover:bg-blue-600">
+            <img style="height: 50px;" src="../static/GitHub_Invertocat_Light.png" alt="github">
+        </a>
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <img src="../static/meetmate-blackborder1.png" alt="MeetMate Logo" class="mx-auto mb-4" style="width: 200px; height: 100px;">
+            <h2 class="text-xl text-white-400" style="font-size: 30px; font-weight: bold;">Your AI-Powered Meeting Companion</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Left Column -->
+            <div class="bg-gray-800 shadow-lg rounded-lg p-6 flex-1">
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-300 mb-4" style="font-family: 'Meutas', sans-serif; font-weight: bold;">Upload Meeting Recording</h2>
+                    <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+                        <input type="file" name="audio_file" id="file-upload" class="block w-full mb-4 px-3 py-2 border border-gray-700 bg-gray-900 text-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400">
+                        <input type="submit" value="Upload" id="upload-form" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 cursor-pointer" style="font-family: 'Meutas', sans-serif; font-weight: normal;">
+                    </form>
+                </div>
+                <!-- Processing Status -->
+                <div id="processing-status" class="flex items-center gap-2 mb-6 hidden">
+                    <div class="spinner" id="spinner"></div>
+                    <div id="Processing" style="width: 400px; height: 50px;" class="flex items-center bg-gray-700 p-4 rounded-lg text-gray-300">
+                        <span id="processing-text" class="flex items-center text-gray-400">Processing...</span>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-300 mb-4" style="font-weight: bold;">Meeting Info</h2>
+                        <h3 for="Date-time" class="block text-sm font-medium text-gray-400 mb-2" style="font-family: 'Meutas', sans-serif; font-weight: 300;">Date-time:</h3>
+                        <!-- Modified code to display dynamic Date-time -->
+<div id="Date-time" style="height: 60px;" class="bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300" style="font-family: 'Meutas', sans-serif; font-weight: normal;">
+    {{ meeting_info.date_time }}
+</div><br>
+
+                        <h3 for="Attendees" class="block text-sm font-medium text-gray-400 mb-2" style="font-family: 'Meutas', sans-serif; font-weight: 300;">Attendees:</h3>
+                        <!-- Modified code to display dynamic Attendees -->
+<div id="Attendees" style="height: 60px;" class="bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300" style="font-family: 'Meutas', sans-serif; font-weight: normal;">
+    {{ meeting_info.attendees }}<!---<br>
+        {% for i in range(1, meeting_info.attendees|int + 1) %}
+            Speaker {{ i }}<br>
+        {% endfor %}!--->
+</div><br>
+
+<h3 for="Summary" class="block text-sm font-medium text-gray-400 mb-2" style="font-family: 'Meutas', sans-serif; font-weight: 300;">Summary:</h3>
+<div id="Summary" style="height: 312.5px; text-align: justify;" class="bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300" style="font-family: 'Meutas', sans-serif; font-weight: normal;">
+    {{ meeting_info.summary }}
+</div>
+                </div>
+            </div>
+
+            <!-- Center Column -->
+            <!-- Center Column -->
+<!-- Center Column -->
+<div class="bg-gray-800 shadow-lg rounded-lg p-6 flex-1">
+    <h2 class="text-xl font-semibold text-gray-300 mb-4" style="font-weight: bold;">Meeting Transcript</h2>
+    <!-- Modernized and thin scrollbar -->
+    <div id="transcript" style="height: 740px; width: 495px; text-align: justify;" class="bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300 custom-scrollbar" style="font-family: 'Meutas', sans-serif; font-weight: 300;">
+        <pre style="white-space: pre-line; font-family: 'Meutas', sans-serif; font-weight: normal;">{{meeting_info.transcript}}</pre> <!-- Preserve new lines only -->
+    </div>
+</div>
+
+
+            <!-- Right Column -->
+            <div class="bg-gray-800 shadow-lg rounded-lg p-6 flex-1">
+                <h2 class="text-xl font-semibold text-gray-300 mb-4" style="font-weight: bold;">Follow-ups</h2>
+                <!-- Modified code to display dynamic Follow-ups -->
+<div id="followups"style="height: 280px;" class="h-64 bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300 mb-4" style="font-family: 'Meutas', sans-serif; font-weight: 100;">
+    {{ meeting_info.follow_ups }}<br><br><a style="text-decoration: underline; word-break: break-all; font-family: 'Meutas', sans-serif; font-weight: normal;" href="{{meeting_info.follow_ups_link}}">{{meeting_info.follow_ups_link}}</a>
+</div>
+
+<h2 class="text-xl font-semibold text-gray-300 mb-4" style="font-weight: bold;">Action Items</h2>
+<!-- Modified code to display dynamic Action Items -->
+<div id="action-items" style="height: 280px;" class="h-64 bg-gray-700 p-4 overflow-auto rounded-lg text-gray-300 mb-4">
+    <pre style="white-space: pre-line;font-family: 'Meutas', sans-serif; font-weight: normal;">{{ meeting_info.action_items }}</pre> <!-- Preserve new lines and allow text to wrap -->
+</div>
+
+
+<div class="space-y-4">
+    <!-- Download Transcript Button -->
+    <a href="{{ url_for('download_transcript') }}" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 cursor-pointer text-center block" style="font-weight: bold;">
+        Download Transcript
+    </a>
+
+    <!-- Download Minutes Button -->
+    <a href="{{ url_for('download_minutes') }}" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 cursor-pointer text-center block" style="font-weight: bold;">
+        Download Minutes
+    </a>
+</div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('upload-form');
+        const processingStatus = document.getElementById('processing-status');
+        const spinner = document.getElementById('spinner');
+        const processingText = document.getElementById('processing-text');
+
+        uploadForm.addEventListener('submit', function (event) {
+            processingStatus.classList.remove('hidden');
+            processingText.textContent = 'Processing...';
+            spinner.classList.remove('hidden');
+        });
+
+        // Simulate processing completion
+        setTimeout(() => {
+            spinner.classList.add('hidden');
+            processingText.textContent = 'Transcript Ready';
+            processingText.classList.replace('text-gray-400', 'text-green-400');
+        }, 100000); // Replace 5000 with actual processing duration in milliseconds
+        // Check if the page is being reloaded
+        if (performance.navigation.type === 1) {
+            // Redirect to home page on refresh
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
