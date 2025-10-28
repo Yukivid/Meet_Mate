@@ -30,23 +30,6 @@ Simply upload an audio or video file — Meet_Mate does the rest!
 
 ---
 
-Meet_Mate/
-│
-├── app.py # Main Flask application
-├── diarize_MOM.py # Logic for meeting diarization and MOM extraction
-├── cal1.py # Auxiliary computation or processing script
-├── requirements.txt # Python dependencies
-│
-├── static/ # Static assets (CSS, JS, icons)
-├── templates/ # HTML templates for Flask
-│
-├── credentials.json # OAuth credentials (secure this)
-├── keys.json # API keys (secure this)
-└── token.json # Authentication tokens
-
-
----
-
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
@@ -85,24 +68,22 @@ Display & Download: Organized results shown on the dashboard, downloadable in .t
 🔒 Security Notes
 
 Do not commit your credentials.json, keys.json, or token.json to GitHub.
+
 Use .gitignore to keep sensitive data out of version control.
+
 Consider environment variables or a .env file for production deployments.
 ---
 🔮 Future Enhancements
 
 🔊 Integration with Whisper, PyAnnote, or OpenAI Realtime API for more accurate transcription & diarization.
+
 🌍 Multi-language transcription support.
+
 📄 Export summaries to PDF/Word.
+
 ☁️ Cloud deployment (AWS / Render / HuggingFace Spaces).
+
 🧾 Meeting sentiment analysis.
----
----
-🧰 Requirements
-Flask
-moviepy
-pydub
-SpeechRecognition
-nltk
 ---
 
 📜 License
@@ -112,14 +93,5 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 Deepesh Raj A.Y.
 🎓 B.Tech Student, VIT
 💬 GitHub: @Yukivid
----
-⭐ Acknowledgments
-SpeechRecognition Library
-MoviePy
-PyDub
-NLTK
----
 “Meet_Mate — Turning Meetings into Meaningful Minutes.”
----
-📁 Repository Structure
 
